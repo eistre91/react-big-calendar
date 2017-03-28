@@ -79,7 +79,7 @@ let getSiblings = (idx, {
   let siblings = []
 
   while (isSibling(
-    idx, ++nextIdx, { events, startAccessor, endAccessor, min, totalMin })
+    idx, ++nextIdx, { events, startAccessor, endAccessor, min, totalMin, step, timeslots })
   ) {
     siblings.push(nextIdx)
   }
