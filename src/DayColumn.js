@@ -140,12 +140,14 @@ let DaySlot = React.createClass({
       , eventWrapperComponent: EventWrapper
       , rtl: isRtl
       , step
+      , timeslots
       , startAccessor, endAccessor, titleAccessor } = this.props;
 
     let EventComponent = eventComponent
 
     let styledEvents = getStyledEvents({
-      events, startAccessor, endAccessor, min, totalMin: this._totalMin, step
+      events, startAccessor, endAccessor, min, totalMin: this._totalMin,
+      step, timeslots
     })
 
     return styledEvents.map(({ event, style }, idx) => {
@@ -162,7 +164,7 @@ let DaySlot = React.createClass({
       if (eventPropGetter)
         var { style: xStyle, className } = eventPropGetter(event, start, end, _isSelected)
 
-      let { height, top, width, xOffset } = style
+      let { height, top, width, xOffset} = Object.assign({}, style, xStyle)
 
       return (
         <EventWrapper event={event} key={'evt_' + idx}>
