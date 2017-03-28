@@ -164,7 +164,8 @@ let DaySlot = React.createClass({
       if (eventPropGetter)
         var { style: xStyle, className } = eventPropGetter(event, start, end, _isSelected)
 
-      let { height, top, width, xOffset } = style
+      let { height = style.height, top = style.top,
+            width = style.width, xOffset = style.xOffset} = xStyle
 
       return (
         <EventWrapper event={event} key={'evt_' + idx}>
