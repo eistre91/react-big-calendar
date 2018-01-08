@@ -143,7 +143,8 @@ export default class TimeGrid extends Component {
       , width
       , startAccessor
       , endAccessor
-      , allDayAccessor } = this.props;
+      , allDayAccessor
+      , hideEmptyDays } = this.props;
 
     width = width || this.state.gutterWidth;
 
@@ -239,7 +240,7 @@ export default class TimeGrid extends Component {
   }
 
   renderHeader(range, events, width) {
-    let { messages, rtl, selectable, components } = this.props;
+    let { messages, rtl, selectable, components, hideAllDay } = this.props;
     let { isOverflowing } = this.state || {};
 
     let style = {};
