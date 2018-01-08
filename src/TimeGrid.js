@@ -150,7 +150,7 @@ export default class TimeGrid extends Component {
     let range = dates.range(start, end, 'day')
 
     if (hideEmptyDays) {
-        let activeRange = [false false false false false false false];
+        let activeRange = [false, false, false, false, false, false, false];
     }
 
     this.slots = range.length;
