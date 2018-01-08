@@ -40,6 +40,8 @@ export default class TimeGrid extends Component {
 
     rtl: React.PropTypes.bool,
     width: React.PropTypes.number,
+    hideAllDay: React.PropTypes.bool,
+    hideEmptyDays: React.PropTypes.bool,
 
     titleAccessor: accessor.isRequired,
     allDayAccessor: accessor.isRequired,
@@ -63,6 +65,7 @@ export default class TimeGrid extends Component {
 
   static defaultProps = {
     step: 30,
+    timeslots: 2,
     min: dates.startOf(new Date(), 'day'),
     max: dates.endOf(new Date(), 'day'),
     scrollToTime: dates.startOf(new Date(), 'day'),
@@ -146,6 +149,10 @@ export default class TimeGrid extends Component {
 
     let range = dates.range(start, end, 'day')
 
+    if (hideEmptyDays) {
+        let activeRange = [false false false false false false false];
+    }
+
     this.slots = range.length;
 
     let allDayEvents = []
@@ -165,12 +172,20 @@ export default class TimeGrid extends Component {
         }
         else
           rangeEvents.push(event)
+          if (hideEmptyDays) {
+              dayOfEvent = get(event, startAccessor).getDay()
+              activeRange[dayOfEvent] = true
+          }
       }
     })
 
     allDayEvents.sort((a, b) => sortEvents(a, b, this.props))
 
     let gutterRef = ref => this._gutters[1] = ref && findDOMNode(ref);
+
+    if (hideEmptyDays) {
+        range = range.filter(day => activeRange[day.getDay()])
+    }
 
     return (
       <div className='rbc-time-view'>
@@ -231,52 +246,73 @@ export default class TimeGrid extends Component {
     if (isOverflowing)
       style[rtl ? 'marginLeft' : 'marginRight'] = scrollbarSize() + 'px';
 
-    return (
-      <div
-        ref='headerCell'
-        className={cn(
-          'rbc-time-header',
-          isOverflowing && 'rbc-overflowing'
-        )}
-        style={style}
-      >
-        <div className='rbc-row'>
+    if (hideAllDay) {
+        return (
           <div
-            className='rbc-label rbc-header-gutter'
-            style={{ width }}
-          />
-          { this.renderHeaderCells(range) }
-        </div>
-        <div className='rbc-row'>
-          <div
-            ref={ref => this._gutters[0] = ref}
-            className='rbc-label rbc-header-gutter'
-            style={{ width }}
+            ref='headerCell'
+            className={cn(
+              'rbc-time-header',
+              isOverflowing && 'rbc-overflowing'
+            )}
+            style={style}
           >
-            { message(messages).allDay }
+            <div className='rbc-row'>
+              <div
+                className='rbc-label rbc-header-gutter'
+                style={{ width }}
+              />
+              { this.renderHeaderCells(range) }
+            </div>
           </div>
-          <DateContentRow
-            minRows={2}
-            range={range}
-            rtl={this.props.rtl}
-            events={events}
-            className='rbc-allday-cell'
-            selectable={selectable}
-            onSelectSlot={this.handleSelectAllDaySlot}
-            dateCellWrapper={components.dateCellWrapper}
-            eventComponent={this.props.components.event}
-            eventWrapperComponent={this.props.components.eventWrapper}
-            titleAccessor={this.props.titleAccessor}
-            startAccessor={this.props.startAccessor}
-            endAccessor={this.props.endAccessor}
-            allDayAccessor={this.props.allDayAccessor}
-            eventPropGetter={this.props.eventPropGetter}
-            selected={this.props.selected}
-            onSelect={this.handleSelectEvent}
-          />
-        </div>
-      </div>
-    )
+        )
+    } else {
+        return (
+          <div
+            ref='headerCell'
+            className={cn(
+              'rbc-time-header',
+              isOverflowing && 'rbc-overflowing'
+            )}
+            style={style}
+          >
+            <div className='rbc-row'>
+              <div
+                className='rbc-label rbc-header-gutter'
+                style={{ width }}
+              />
+              { this.renderHeaderCells(range) }
+            </div>
+            <div className='rbc-row'>
+              <div
+                ref={ref => this._gutters[0] = ref}
+                className='rbc-label rbc-header-gutter'
+                style={{ width }}
+              >
+                { message(messages).allDay }
+              </div>
+              <DateContentRow
+                minRows={2}
+                range={range}
+                rtl={this.props.rtl}
+                events={events}
+                className='rbc-allday-cell'
+                selectable={selectable}
+                onSelectSlot={this.handleSelectAllDaySlot}
+                dateCellWrapper={components.dateCellWrapper}
+                eventComponent={this.props.components.event}
+                eventWrapperComponent={this.props.components.eventWrapper}
+                titleAccessor={this.props.titleAccessor}
+                startAccessor={this.props.startAccessor}
+                endAccessor={this.props.endAccessor}
+                allDayAccessor={this.props.allDayAccessor}
+                eventPropGetter={this.props.eventPropGetter}
+                selected={this.props.selected}
+                onSelect={this.handleSelectEvent}
+              />
+            </div>
+          </div>
+        )
+    }
   }
 
   renderHeaderCells(range){
