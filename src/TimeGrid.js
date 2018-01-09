@@ -260,6 +260,7 @@ export default class TimeGrid extends Component {
           >
             <div className='rbc-row'>
               <div
+                ref={ref => this._gutters[0] = ref}
                 className='rbc-label rbc-header-gutter'
                 style={{ width }}
               />
