@@ -155,8 +155,6 @@ export default class TimeGrid extends Component {
         activeRange = [false, false, false, false, false, false, false];
     }
 
-    this.slots = range.length;
-
     let allDayEvents = []
       , rangeEvents = [];
 
@@ -188,6 +186,8 @@ export default class TimeGrid extends Component {
     if (hideEmptyDays) {
         range = range.filter(day => activeRange[day.getDay()])
     }
+
+    this.slots = range.length;
 
     return (
       <div className='rbc-time-view'>
