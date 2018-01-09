@@ -175,7 +175,7 @@ export default class TimeGrid extends Component {
         else
           rangeEvents.push(event)
           if (hideEmptyDays) {
-              dayOfEvent = get(event, startAccessor).getDay()
+              let dayOfEvent = get(event, startAccessor).getDay()
               activeRange[dayOfEvent] = true
           }
       }
