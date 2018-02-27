@@ -44,6 +44,7 @@ Week.range = (date, { culture }) => {
   let start = dates.startOf(date, 'week', firstOfWeek)
   let end = dates.endOf(date, 'week', firstOfWeek)
 
+  console.log(start, end)
   return { start, end }
 }
 
