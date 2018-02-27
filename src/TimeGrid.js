@@ -151,9 +151,12 @@ export default class TimeGrid extends Component {
     width = width || this.state.gutterWidth;
     customDates = customDates || [];
 
+    console.log(customDates);
+
     let range = [];
     if (customDates.length === 0) {
-      dates.range(start, end, 'day')
+      range = dates.range(start, end, 'day');
+      console.log(range);
     } else {
       range = customDates
     }
