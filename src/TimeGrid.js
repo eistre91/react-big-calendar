@@ -43,6 +43,8 @@ export default class TimeGrid extends Component {
     hideAllDay: React.PropTypes.bool,
     hideEmptyDays: React.PropTypes.bool,
 
+    customDates: React.PropTypes.array,
+
     titleAccessor: accessor.isRequired,
     allDayAccessor: accessor.isRequired,
     startAccessor: accessor.isRequired,
@@ -144,15 +146,15 @@ export default class TimeGrid extends Component {
       , startAccessor
       , endAccessor
       , allDayAccessor
-      , hideEmptyDays } = this.props;
+      , customDates} = this.props;
 
     width = width || this.state.gutterWidth;
 
-    let range = dates.range(start, end, 'day')
-
-    let activeRange = []
-    if (hideEmptyDays) {
-        activeRange = [false, false, false, false, false, false, false];
+    let range = [];
+    if (customDates.length === 0) {
+      dates.range(start, end, 'day')
+    } else {
+      range = customDates
     }
 
     let allDayEvents = []
@@ -172,20 +174,12 @@ export default class TimeGrid extends Component {
         }
         else
           rangeEvents.push(event)
-          if (hideEmptyDays) {
-              let dayOfEvent = get(event, startAccessor).getDay()
-              activeRange[dayOfEvent] = true
-          }
       }
     })
 
     allDayEvents.sort((a, b) => sortEvents(a, b, this.props))
 
     let gutterRef = ref => this._gutters[1] = ref && findDOMNode(ref);
-
-    if (hideEmptyDays) {
-        range = range.filter(day => activeRange[day.getDay()])
-    }
 
     this.slots = range.length;
 

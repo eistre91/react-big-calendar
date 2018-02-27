@@ -11,7 +11,7 @@ const Formats = {
   [views.AGENDA]: 'agendaHeaderFormat'
 }
 
-export default function viewLabel(date, view, formats, culture){
+export default function viewLabel(date, view, formats, culture, customDates){
   let View = VIEWS[view];
   let headerSingle = view === views.MONTH || view === views.DAY
 
@@ -21,5 +21,5 @@ export default function viewLabel(date, view, formats, culture){
 
   return headerSingle
     ? localizer.format(date, headerFormat, culture)
-    : localizer.format(View.range(date, { culture }), headerFormat, culture)
+    : localizer.format(View.range(date, { culture, customDates }), headerFormat, culture)
 }

@@ -222,6 +222,7 @@ let Calendar = React.createClass({
 
     hideAllDay: PropTypes.bool,
     hideEmptyDays: PropTypes.bool,
+    customDates: PropTypes.array,
 
     /**
      * Optionally provide a function that returns an object of className or style props
@@ -493,6 +494,7 @@ let Calendar = React.createClass({
     let {
         view, toolbar, events
       , culture
+      , customDates
       , components = {}
       , formats = {}
       , style
@@ -531,7 +533,7 @@ let Calendar = React.createClass({
             date={current}
             view={view}
             views={names}
-            label={viewLabel(current, view, formats, culture)}
+            label={viewLabel(current, view, formats, culture, customDates)}
             onViewChange={this.handleViewChange}
             onNavigate={this.handleNavigate}
             messages={this.props.messages}
