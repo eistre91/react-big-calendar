@@ -43,7 +43,6 @@ CustomRange.range = (date, {culture, customDates}) => {
   let start = dates.min.apply(this, customDates);
   let end = dates.max.apply(this, customDates);
 
-  console.log(start, end);
   return {start, end}
 }
 
