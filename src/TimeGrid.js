@@ -149,6 +149,7 @@ export default class TimeGrid extends Component {
       , customDates} = this.props;
 
     width = width || this.state.gutterWidth;
+    customDates = customDates || [];
 
     let range = [];
     if (customDates.length === 0) {
