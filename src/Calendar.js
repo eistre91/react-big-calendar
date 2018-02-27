@@ -543,6 +543,7 @@ let Calendar = React.createClass({
           ref='view'
           {...props}
           {...formats}
+          customDates={customDates}
           culture={culture}
           formats={undefined}
           events={events}
